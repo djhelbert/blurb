@@ -2,7 +2,8 @@
 package com.blurb.dao;
 
 import com.blurb.api.BlurbUser;
-import com.blurb.exception.BlurbUserException;
+import com.blurb.exception.BlurbUserExistsException;
+import com.blurb.exception.BlurbUserNotFoundException;
 
 /**
  * Blurb User DAO
@@ -16,14 +17,14 @@ public interface BlurbUserDao {
    * 
    * @param user 
    */
-  public void createBlurbUser(BlurbUser user);
+  public void createBlurbUser(BlurbUser user) throws BlurbUserExistsException;
 
   /**
-   * Get USer
+   * Get User
    * 
    * @param username Username
    * @return Blurb User
-   * @throws BlurbUserException 
+   * @throws BlurbUserNotFoundException 
    */
-  public BlurbUser getBlurbUser(String username) throws BlurbUserException;
+  public BlurbUser getBlurbUser(String username) throws BlurbUserNotFoundException;
 }

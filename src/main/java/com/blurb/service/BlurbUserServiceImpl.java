@@ -3,7 +3,8 @@ package com.blurb.service;
 
 import com.blurb.api.BlurbUser;
 import com.blurb.dao.BlurbUserDao;
-import com.blurb.exception.BlurbUserException;
+import com.blurb.exception.BlurbUserExistsException;
+import com.blurb.exception.BlurbUserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -21,12 +22,12 @@ public class BlurbUserServiceImpl implements BlurbUserService {
   }
 
   @Override
-  public void createBlurbUser(BlurbUser user) {
+  public void createBlurbUser(BlurbUser user) throws BlurbUserExistsException {
     dao.createBlurbUser(user);
   }
 
   @Override
-  public BlurbUser getBlurbUser(String username) throws BlurbUserException {
+  public BlurbUser getBlurbUser(String username) throws BlurbUserNotFoundException {
     return dao.getBlurbUser(username);
   }
 }

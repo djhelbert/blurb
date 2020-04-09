@@ -2,6 +2,7 @@
 package com.blurb.dao;
 
 import com.aerospike.client.AerospikeClient;
+import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
@@ -9,7 +10,8 @@ import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.blurb.BlurbConstants;
 import com.blurb.api.BlurbUser;
-import com.blurb.exception.BlurbUserException;
+import com.blurb.exception.BlurbUserExistsException;
+import com.blurb.exception.BlurbUserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -27,9 +29,9 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
   }
 
   @Override
-  public void createBlurbUser(BlurbUser user) {
+  public void createBlurbUser(BlurbUser user) throws BlurbUserExistsException {
     final WritePolicy policy = new WritePolicy();
-    policy.recordExistsAction = RecordExistsAction.UPDATE;
+    policy.recordExistsAction = RecordExistsAction.CREATE_ONLY;
 
     final Key key = new Key(BlurbConstants.NAMESPACE, BlurbConstants.USERS, user.getUsername());
     final Bin bin1 = new Bin("username", user.getUsername());
@@ -37,11 +39,15 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
     final Bin bin3 = new Bin("email", user.getEmail());
     final Bin bin4 = new Bin("countrycode", user.getCountryCode());
 
-    client.put(policy, key, bin1, bin2, bin3, bin4);
+    try {
+      client.put(policy, key, bin1, bin2, bin3, bin4);
+    } catch (AerospikeException err) {
+      throw new BlurbUserExistsException(user.getUsername());
+    }
   }
 
   @Override
-  public BlurbUser getBlurbUser(String username) throws BlurbUserException {
+  public BlurbUser getBlurbUser(String username) throws BlurbUserNotFoundException {
     final Key key = new Key(BlurbConstants.NAMESPACE, BlurbConstants.USERS, username);
     final Record userRecord = client.get(null, key);
 
@@ -54,7 +60,7 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
 
       return user;
     } else {
-      throw new BlurbUserException(username);
+      throw new BlurbUserNotFoundException(username);
     }
   }
 

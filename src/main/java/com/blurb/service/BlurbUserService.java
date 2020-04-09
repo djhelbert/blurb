@@ -2,7 +2,8 @@
 package com.blurb.service;
 
 import com.blurb.api.BlurbUser;
-import com.blurb.exception.BlurbUserException;
+import com.blurb.exception.BlurbUserExistsException;
+import com.blurb.exception.BlurbUserNotFoundException;
 
 /**
  * User Service
@@ -11,7 +12,20 @@ import com.blurb.exception.BlurbUserException;
  */
 public interface BlurbUserService {
 
-  public void createBlurbUser(BlurbUser user);
+  /**
+   * Create User
+   *
+   * @param user
+   * @throws BlurbUserExistsException
+   */
+  public void createBlurbUser(BlurbUser user) throws BlurbUserExistsException;
 
-  public BlurbUser getBlurbUser(String username) throws BlurbUserException;
+  /**
+   * Get User
+   *
+   * @param username
+   * @return
+   * @throws BlurbUserNotFoundException
+   */
+  public BlurbUser getBlurbUser(String username) throws BlurbUserNotFoundException;
 }
