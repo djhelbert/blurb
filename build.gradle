@@ -1,17 +1,31 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'application'
 
-
 description = 'Blurb'
-    group = 'com.blurb'
+group = 'com.blurb'
 
 mainClassName = 'com.blurb.Main'
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    testImplementation     'junit:junit:4.13'
+    compile group: 'com.aerospike', name: 'aerospike-client', version: '4.4.10'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
 }
