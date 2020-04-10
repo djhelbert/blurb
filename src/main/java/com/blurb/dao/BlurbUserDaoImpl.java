@@ -6,19 +6,19 @@ import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
-import com.aerospike.client.policy.RecordExistsAction;
-import com.aerospike.client.policy.WritePolicy;
 import com.blurb.BlurbConstants;
 import com.blurb.api.BlurbUser;
 import com.blurb.exception.BlurbUserExistsException;
 import com.blurb.exception.BlurbUserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Blurb User DAO Implementation
  *
  * @author djhel
  */
+@Component
 public class BlurbUserDaoImpl implements BlurbUserDao {
 
   private AerospikeClient client;
@@ -30,8 +30,6 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
 
   @Override
   public void createBlurbUser(BlurbUser user) throws BlurbUserExistsException {
-    final WritePolicy policy = new WritePolicy();
-    policy.recordExistsAction = RecordExistsAction.CREATE_ONLY;
 
     final Key key = new Key(BlurbConstants.NAMESPACE, BlurbConstants.USERS, user.getUsername());
     final Bin bin1 = new Bin("username", user.getUsername());
@@ -40,7 +38,7 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
     final Bin bin4 = new Bin("countrycode", user.getCountryCode());
 
     try {
-      client.put(policy, key, bin1, bin2, bin3, bin4);
+      client.put(ClientUtil.getWritePolicy(), key, bin1, bin2, bin3, bin4);
     } catch (AerospikeException err) {
       throw new BlurbUserExistsException(user.getUsername());
     }

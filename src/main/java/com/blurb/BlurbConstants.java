@@ -2,11 +2,19 @@
 package com.blurb;
 
 /**
- * Constants
- * 
+ * Blurb Constants
+ *
  * @author djhel
  */
 public class BlurbConstants {
-  public static final String NAMESPACE = "blurb";
+
+  /**
+   * DB Name Space
+   */
+  public static final String NAMESPACE = "test";
+  
+  /**
+   * Users
+   */
   public static final String USERS = "users";
 }

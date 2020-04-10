@@ -15,7 +15,7 @@ public interface BlurbUserService {
   /**
    * Create User
    *
-   * @param user
+   * @param user Blurb User
    * @throws BlurbUserExistsException
    */
   public void createBlurbUser(BlurbUser user) throws BlurbUserExistsException;
@@ -23,8 +23,8 @@ public interface BlurbUserService {
   /**
    * Get User
    *
-   * @param username
-   * @return
+   * @param username User Name
+   * @return Blurb user
    * @throws BlurbUserNotFoundException
    */
   public BlurbUser getBlurbUser(String username) throws BlurbUserNotFoundException;

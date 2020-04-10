@@ -2,7 +2,6 @@
 package com.blurb.config;
 
 import com.aerospike.client.AerospikeClient;
-import com.aerospike.client.policy.ClientPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,12 +13,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringConfig {
 
+  /**
+   * Get Aerospike Client
+   * 
+   * @return Aerospike Client
+   */
   @Bean
   public AerospikeClient aeorspikeClient() {
-    final ClientPolicy policy = new ClientPolicy();
-    policy.timeout = 500;
-
-    final AerospikeClient client = new AerospikeClient(policy, "localhost", 3000);
-    return client;
+    return new AerospikeClient("127.0.0.1", 3000);
   }
 }

@@ -6,12 +6,14 @@ import com.blurb.dao.BlurbUserDao;
 import com.blurb.exception.BlurbUserExistsException;
 import com.blurb.exception.BlurbUserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Blurb User Service Implementation
  *
  * @author djhel
  */
+@Service
 public class BlurbUserServiceImpl implements BlurbUserService {
 
   private BlurbUserDao dao;
