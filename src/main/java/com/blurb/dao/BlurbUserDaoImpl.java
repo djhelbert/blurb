@@ -10,6 +10,7 @@ import com.blurb.BlurbConstants;
 import com.blurb.api.BlurbUser;
 import com.blurb.exception.BlurbUserExistsException;
 import com.blurb.exception.BlurbUserNotFoundException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BlurbUserDaoImpl implements BlurbUserDao {
 
-  private AerospikeClient client;
+  private final AerospikeClient client;
 
   @Autowired
   public BlurbUserDaoImpl(AerospikeClient client) {
@@ -36,9 +37,10 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
     final Bin bin2 = new Bin("password", user.getPassword());
     final Bin bin3 = new Bin("email", user.getEmail());
     final Bin bin4 = new Bin("countrycode", user.getCountryCode());
+    final Bin bin5 = new Bin("follows", user.getFollows());
 
     try {
-      client.put(ClientUtil.getWritePolicy(), key, bin1, bin2, bin3, bin4);
+      client.put(ClientUtil.getWritePolicy(), key, bin1, bin2, bin3, bin4, bin5);
     } catch (AerospikeException err) {
       throw new BlurbUserExistsException(user.getUsername());
     }
@@ -55,6 +57,7 @@ public class BlurbUserDaoImpl implements BlurbUserDao {
       user.setPassword(null);
       user.setEmail(userRecord.getString("email"));
       user.setCountryCode(userRecord.getString("countrycode"));
+      user.setFollows((List<String>)userRecord.getList("follows"));
 
       return user;
     } else {

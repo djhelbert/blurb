@@ -1,6 +1,8 @@
 /** Copyright 2020 All Rights Reserved */
 package com.blurb.api;
 
+import java.util.List;
+
 /**
  * Blurb User
  *
@@ -12,7 +14,8 @@ public class BlurbUser {
   private String password;
   private String email;
   private String countryCode;
-
+  private List<String> follows;
+  
   public String getUsername() {
     return username;
   }
@@ -45,4 +48,11 @@ public class BlurbUser {
     this.countryCode = countryCode;
   }
 
+  public List<String> getFollows() {
+    return follows;
+  }
+
+  public void setFollows(List<String> follows) {
+    this.follows = follows;
+  }
 }
